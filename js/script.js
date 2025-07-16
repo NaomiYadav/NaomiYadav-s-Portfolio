@@ -88,7 +88,7 @@ window.addEventListener('load', () => {
     
     if (titleElement) {
         setTimeout(() => {
-            typeWriter(titleElement, 'B.Tech Computer Science Student', 100);
+            typeWriter(titleElement, 'BCA (AI & Data Science) Student', 100);
         }, 2500);
     }
 });
@@ -130,15 +130,37 @@ function animateCounter(element, target, duration = 2000) {
     updateCounter();
 }
 
+// Decimal animation for SGPA
+function animateDecimal(element, target, duration = 2000) {
+    let start = 0;
+    const increment = target / (duration / 16);
+    
+    function updateCounter() {
+        start += increment;
+        if (start < target) {
+            element.textContent = start.toFixed(2);
+            requestAnimationFrame(updateCounter);
+        } else {
+            element.textContent = target.toFixed(2);
+        }
+    }
+    updateCounter();
+}
+
 // Trigger counter animation when stats section is visible
 const statsObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             const statItems = entry.target.querySelectorAll('.stat-item h3');
             statItems.forEach((item, index) => {
-                const targets = [20, 5, 3, 95]; // Corresponding to the stats
+                const targets = [5, 6, 2, 8.46]; // Updated stats: Certifications, Languages, Years, SGPA
                 setTimeout(() => {
-                    animateCounter(item, targets[index], 2000);
+                    if (index === 3) {
+                        // For SGPA, animate to 8.46
+                        animateDecimal(item, targets[index], 2000);
+                    } else {
+                        animateCounter(item, targets[index], 2000);
+                    }
                 }, index * 200);
             });
             statsObserver.unobserve(entry.target);
